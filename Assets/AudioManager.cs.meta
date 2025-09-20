@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 61a87733856ed5f4baae25d02472effb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bgmSource: {instanceID: 0}
+  - sfxSource: {instanceID: 0}
+  - introClip: {fileID: 8300000, guid: 3efda3f50c0564a4a8ea99007cca5fb8, type: 3}
+  - ghostsNormalClip: {fileID: 8300000, guid: a9c5aead03308234ca77cca11e5f98c3, type: 3}
+  - moveClip: {fileID: 8300000, guid: 0e5b1c082b0a1df498a1a7e62a64eff5, type: 3}
+  - pelletClip: {fileID: 8300000, guid: 02fbdc2758ca83641ae2db05bcf7898e, type: 3}
+  - collisionClip: {fileID: 8300000, guid: 94df33df4c3481544953c773d59aba6d, type: 3}
+  - deathClip: {fileID: 8300000, guid: e197038830365074396ab91442f9ef64, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
