@@ -19225,7 +19225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 728315114}
   m_Layer: 0
-  m_Name: LevelRoot
+  m_Name: LevelRoot Part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44520,7 +44520,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616546144}
   m_Layer: 0
-  m_Name: LevelRoot1
+  m_Name: LevelRoot Part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
