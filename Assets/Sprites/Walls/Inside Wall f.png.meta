@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 38c1697ac9f88f240ba1d6c5f0f8ed05
+guid: b17f02a08563e92429fad1cda7083793
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -79038868277934948
-    second: Inside Wall_0
+      213: 916627581350322885
+    second: Inside Wall f_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Inside Wall_0
+      name: Inside Wall f_0
       rect:
         serializedVersion: 2
         x: 0
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c9448dc619237eef0800000000000000
-      internalID: -79038868277934948
+      spriteID: 5c226b1cde388bc00800000000000000
+      internalID: 916627581350322885
       vertices: []
       indices: 
       edges: []
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Inside Wall_0: -79038868277934948
+      Inside Wall f_0: 916627581350322885
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
