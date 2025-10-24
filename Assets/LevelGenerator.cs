@@ -12,6 +12,8 @@ public class LevelGenerator : MonoBehaviour
     public GameObject tjunctionPrefab;
     public GameObject ghostGatePrefab;
     public GameObject emptyPrefab;
+
+    public float tileSize = 2.0f;
     public float overlap = 0.48f;
 
     int[,] levelMap =
@@ -53,7 +55,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 int tile = levelMap[y, x];
                 if (tile == 0) continue;
-                Vector3 pos = new Vector3(-(cols - x - 1 - overlap), -(rows - y - 1 - overlap), 0f);
+                Vector3 pos = new Vector3(-(cols - x - 1 - overlap) * tileSize, -(rows - y - 1 - overlap) * tileSize, 0f);
                 GameObject prefab = GetPrefab(tile);
                 if (prefab == null) continue;
                 GameObject go = Instantiate(prefab, pos, Quaternion.identity, tlParent);
@@ -80,12 +82,9 @@ public class LevelGenerator : MonoBehaviour
             Vector3 p = child.position;
             Quaternion r = child.rotation;
             Vector3 s = child.localScale;
-            var goTR = Instantiate(child.gameObject, new Vector3(-p.x, p.y, p.z), r, tr);
-            goTR.transform.localScale = s;
-            var goBL = Instantiate(child.gameObject, new Vector3(p.x, -p.y, p.z), r, bl);
-            goBL.transform.localScale = s;
-            var goBR = Instantiate(child.gameObject, new Vector3(-p.x, -p.y, p.z), r, br);
-            goBR.transform.localScale = s;
+            Instantiate(child.gameObject, new Vector3(-p.x, p.y, p.z), r, tr).transform.localScale = s;
+            Instantiate(child.gameObject, new Vector3(p.x, -p.y, p.z), r, bl).transform.localScale = s;
+            Instantiate(child.gameObject, new Vector3(-p.x, -p.y, p.z), r, br).transform.localScale = s;
         }
     }
 
@@ -159,17 +158,34 @@ public class LevelGenerator : MonoBehaviour
 
     void FitCameraToFourQuadrants()
     {
-        int rows = levelMap.GetLength(0);
-        int cols = levelMap.GetLength(1);
         var cam = Camera.main;
         if (cam == null) return;
+
         cam.orthographic = true;
+
+        int rows = levelMap.GetLength(0);
+        int cols = levelMap.GetLength(1);
+
+        float mapWidth = cols * tileSize * 2f;
+        float mapHeight = rows * tileSize * 2f;
+
+        float halfWidth = mapWidth / 2f;
+        float halfHeight = mapHeight / 2f;
+
         cam.transform.position = new Vector3(0f, 0f, -10f);
-        float needH = rows;
-        float needW = cols / cam.aspect;
-        cam.orthographicSize = Mathf.Ceil(Mathf.Max(needH, needW));
+
+        float aspect = cam.pixelWidth / (float)cam.pixelHeight;
+        float sizeByHeight = halfHeight;
+        float sizeByWidth = halfWidth / aspect;
+
+        cam.orthographicSize = Mathf.Max(sizeByHeight, sizeByWidth) * 1.05f;
     }
+
+
+
 }
+
+
 
 
 
