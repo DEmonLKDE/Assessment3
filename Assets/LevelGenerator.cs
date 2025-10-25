@@ -180,9 +180,6 @@ public class LevelGenerator : MonoBehaviour
 
         cam.orthographicSize = Mathf.Max(sizeByHeight, sizeByWidth) * 1.05f;
     }
-
-
-
 }
 
 
