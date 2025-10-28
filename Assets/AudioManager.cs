@@ -1,53 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [Header("Audio Sources")]
     public AudioSource bgmSource;
     public AudioSource sfxSource;
 
-    public AudioClip introClip;
-    public AudioClip ghostsNormalClip;
-
-    public AudioClip moveClip;
-    public AudioClip pelletClip;
-    public AudioClip collisionClip;
-    public AudioClip deathClip;
+    [Header("Clips")]
+    public AudioClip countdownBGM;  
+    public AudioClip normalBGM;
+    public AudioClip scaredBGM;
+    public AudioClip deadGhostBGM;
 
     void Start()
     {
-        bgmSource.clip = introClip;
+        // 保留空闲状态，等待 GameManager 控制
+    }
+
+    // --- 新增 ---
+    public void PlayCountdownBGM(bool loop = false)
+    {
+        if (bgmSource == null || countdownBGM == null) return;
+        bgmSource.clip = countdownBGM;
+        bgmSource.loop = loop;
+        bgmSource.Play();
+    }
+
+    public void PlayNormalBGM(bool loop = true)
+    {
+        if (bgmSource == null || normalBGM == null) return;
+        bgmSource.clip = normalBGM;
+        bgmSource.loop = loop;
+        bgmSource.Play();
+    }
+
+    public void PlayScaredBGM(bool loop = true)
+    {
+        if (bgmSource == null || scaredBGM == null) return;
+        bgmSource.clip = scaredBGM;
+        bgmSource.loop = loop;
+        bgmSource.Play();
+    }
+
+    public void PlayDeadGhostBGM()
+    {
+        if (bgmSource == null || deadGhostBGM == null) return;
+        bgmSource.clip = deadGhostBGM;
         bgmSource.loop = false;
         bgmSource.Play();
-
-        Invoke("PlayNormalBGM", 3f);
     }
 
-    void PlayNormalBGM()
+    public void StopAllBGM()
     {
-        bgmSource.clip = ghostsNormalClip;
-        bgmSource.loop = true;
-        bgmSource.Play();
+        if (bgmSource != null) bgmSource.Stop();
     }
 
-    public void PlayMoveSFX()
+    public void StopAllSFX()
     {
-        sfxSource.PlayOneShot(moveClip);
-    }
-
-    public void PlayPelletSFX()
-    {
-        sfxSource.PlayOneShot(pelletClip);
-    }
-
-    public void PlayCollisionSFX()
-    {
-        sfxSource.PlayOneShot(collisionClip);
-    }
-
-    public void PlayDeathSFX()
-    {
-        sfxSource.PlayOneShot(deathClip);
+        if (sfxSource != null) sfxSource.Stop();
     }
 }
+

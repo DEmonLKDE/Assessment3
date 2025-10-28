@@ -11,7 +11,7 @@ public class CherryController : MonoBehaviour
 
     [Header("Map Settings")]
     public Vector2 center = new Vector2(-10.5f, 3.5f); // 你地图的中心点
-    public Vector2 mapSize = new Vector2(24f, 18f);    // 地图大致宽高（世界坐标）
+    public Vector2 mapSize = new Vector2(30f, 30f);    // 地图大致宽高（世界坐标）
 
     private GameObject currentCherry;
 
