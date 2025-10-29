@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         if (Instance == null)
         {
             Instance = this;
@@ -101,7 +103,6 @@ public class GameManager : MonoBehaviour
             if (GameObject.FindGameObjectsWithTag("Pellet").Length == 0 &&
         GameObject.FindGameObjectsWithTag("PowerPellet").Length == 0)
             {
-                Debug.Log("All pellets eaten! Game Over triggered.");
                 StartCoroutine(GameOver());
             }
         }
@@ -109,16 +110,26 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RoundStartRoutine()
     {
+        if (hud)
+        {
+            hud.ShowGameOver(false);
+            hud.ShowGhostTimer(false);
+            if (hud.countdownPanel)
+                hud.countdownPanel.SetActive(false);
+        }
+
         isGameRunning = false;
         if (pacStudent) pacStudent.canControl = false;
-        foreach (var g in ghosts) g.SetCanMove(false);
+        foreach (var g in ghosts)
+            g.SetCanMove(false);
 
         if (audioManager) audioManager.PlayCountdownBGM();
         if (hud) yield return StartCoroutine(hud.Countdown321GO(1f));
 
         if (audioManager) audioManager.PlayNormalBGM();
         if (pacStudent) pacStudent.canControl = true;
-        foreach (var g in ghosts) g.SetCanMove(true);
+        foreach (var g in ghosts)
+            g.SetCanMove(true);
 
         isGameRunning = true;
     }
@@ -257,7 +268,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"No new record saved. Keeping HighScore = {prevHigh}");
         }
 
         yield return new WaitForSeconds(3f);
@@ -275,7 +285,10 @@ public class GameManager : MonoBehaviour
 
     public void ExitToStartScene()
     {
+        StopAllCoroutines();
         isGameRunning = false;
+        if (hud && hud.countdownPanel) hud.countdownPanel.SetActive(false);
+        if (hud && hud.gameOverPanel) hud.gameOverPanel.SetActive(false);
 
         int currentScore = score;
         float currentTime = gameTimer;
@@ -292,7 +305,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No new record via Exit.");
         }
 
         StartCoroutine(ReturnToStartAfterDelay(3f));
@@ -306,6 +318,38 @@ public class GameManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "StartScene")
+        {
+            isGameRunning = false;
+            return;
+        }
+
+        hud = FindObjectOfType<HUDController>();
+        pacStudent = FindObjectOfType<PacStudentController>();
+        ghosts = FindObjectsOfType<GhostController>();
+        audioManager = FindObjectOfType<AudioManager>();
+        cherryManager = FindObjectOfType<CherryController>();
+
+        if (scene.name == "Level1" || scene.name == "Level2")
+        {
+            StartCoroutine(RoundStartRoutine());
+        }
+
+
+        if (hud != null)
+        {
+            hud.SetScore(score);
+            hud.ShowGameOver(false);
+            hud.ShowGhostTimer(false);
+        }
+
+    }
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 }
 
 
