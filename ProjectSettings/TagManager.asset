@@ -3,18 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Walls
+  - Pellet
+  - PowerPellet
+  - Cherry
+  - Ghost
+  - DashOrb
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Ghost
+  - GhostSpawn
+  - IgnoreGhost
   - 
   - 
   - 
