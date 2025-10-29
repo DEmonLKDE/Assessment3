@@ -32,8 +32,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
         if (Instance == null)
         {
             Instance = this;
@@ -265,6 +263,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt($"HighScore_{currentLevelKey}", score);
             PlayerPrefs.SetFloat($"BestTime_{currentLevelKey}", gameTimer);
             PlayerPrefs.Save();
+            Debug.Log("New Record");
         }
         else
         {
@@ -301,7 +300,8 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt($"HighScore_{currentLevelKey}", currentScore);
             PlayerPrefs.SetFloat($"BestTime_{currentLevelKey}", currentTime);
-            PlayerPrefs.Save(); 
+            PlayerPrefs.Save();
+            Debug.Log("New Record");
         }
         else
         {
@@ -316,39 +316,6 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "StartScene")
-        {
-            isGameRunning = false;
-            return;
-        }
-
-        hud = FindObjectOfType<HUDController>();
-        pacStudent = FindObjectOfType<PacStudentController>();
-        ghosts = FindObjectsOfType<GhostController>();
-        audioManager = FindObjectOfType<AudioManager>();
-        cherryManager = FindObjectOfType<CherryController>();
-
-        if (scene.name == "Level1" || scene.name == "Level2")
-        {
-            StartCoroutine(RoundStartRoutine());
-        }
-
-
-        if (hud != null)
-        {
-            hud.SetScore(score);
-            hud.ShowGameOver(false);
-            hud.ShowGhostTimer(false);
-        }
-
-    }
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
 
