@@ -4,14 +4,14 @@ using System.Collections;
 public class CherryController : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject cherryPrefab;      // 拖入樱桃预制体
-    public float moveDuration = 8f;      // 从一侧穿到另一侧所需时间
-    public float spawnDelay = 5f;        // 场景开始后、或上一颗被吃掉后的再生成间隔
-    public float outMargin = 2f;         // 出界的偏移距离（越大越靠外生成）
+    public GameObject cherryPrefab;   
+    public float moveDuration = 8f;   
+    public float spawnDelay = 5f;        
+    public float outMargin = 2f;       
 
     [Header("Map Settings")]
-    public Vector2 center = new Vector2(-10.5f, 3.5f); // 你地图的中心点
-    public Vector2 mapSize = new Vector2(30f, 30f);    // 地图大致宽高（世界坐标）
+    public Vector2 center = new Vector2(-10.5f, 3.5f); 
+    public Vector2 mapSize = new Vector2(30f, 30f); 
 
     private GameObject currentCherry;
 
@@ -40,16 +40,16 @@ public class CherryController : MonoBehaviour
         Vector3 start = Vector3.zero;
         switch (side)
         {
-            case 0: // 左 → 右
+            case 0: 
                 start = new Vector3(center.x - mapSize.x / 2f - outMargin, Random.Range(center.y - mapSize.y / 2f, center.y + mapSize.y / 2f), 0);
                 break;
-            case 1: // 右 → 左
+            case 1: 
                 start = new Vector3(center.x + mapSize.x / 2f + outMargin, Random.Range(center.y - mapSize.y / 2f, center.y + mapSize.y / 2f), 0);
                 break;
-            case 2: // 下 → 上
+            case 2: 
                 start = new Vector3(Random.Range(center.x - mapSize.x / 2f, center.x + mapSize.x / 2f), center.y - mapSize.y / 2f - outMargin, 0);
                 break;
-            case 3: // 上 → 下
+            case 3: 
                 start = new Vector3(Random.Range(center.x - mapSize.x / 2f, center.x + mapSize.x / 2f), center.y + mapSize.y / 2f + outMargin, 0);
                 break;
         }
@@ -59,7 +59,7 @@ public class CherryController : MonoBehaviour
 
         currentCherry = Instantiate(cherryPrefab, start, Quaternion.identity);
         var sr = currentCherry.GetComponent<SpriteRenderer>();
-        if (sr != null) sr.sortingOrder = 100; // 保证在所有物体上方显示
+        if (sr != null) sr.sortingOrder = 100;
 
         StartCoroutine(MoveCherry(currentCherry, start, end));
     }

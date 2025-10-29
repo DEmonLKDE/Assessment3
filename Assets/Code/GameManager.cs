@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public static GameManager instance; // 兼容旧调用
+    public static GameManager instance; 
 
     [Header("References")]
     public PacStudentController pacStudent;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            instance = this; // 保留旧兼容
+            instance = this; 
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // 初始化生命与 HUD（防止 lives = 0）
         lives = startLives;
         if (hud != null)
         {
@@ -57,7 +56,6 @@ public class GameManager : MonoBehaviour
             hud.ShowGhostTimer(false);
         }
 
-        // 启动倒计时
         StartCoroutine(RoundStartRoutine());
     }
 
@@ -85,12 +83,18 @@ public class GameManager : MonoBehaviour
                     ghostsScared = false;
                     hud.ShowGhostTimer(false);
                     foreach (var g in ghosts)
-                        if (g.CurrentState != GhostController.GhostState.Dead)
+                    {
+                        if (g.CurrentState == GhostController.GhostState.Scared ||
+                            g.CurrentState == GhostController.GhostState.Recovering)
+                        {
                             g.SetState(GhostController.GhostState.Normal);
+                        }
+                    }
                     audioManager.PlayNormalBGM();
                 }
+
             }
-            
+
             if (GameObject.FindGameObjectsWithTag("Pellet").Length == 0 &&
         GameObject.FindGameObjectsWithTag("PowerPellet").Length == 0)
             {
@@ -100,9 +104,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ------------------------------------
-    // 启动与开局流程
-    // ------------------------------------
     private IEnumerator RoundStartRoutine()
     {
         isGameRunning = false;
@@ -133,9 +134,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // ------------------------------------
-    // 加分事件
-    // ------------------------------------
     public void OnPelletEaten() => AddScore(10);
     public void OnPowerPelletEaten()
     {
@@ -152,9 +150,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(RecoverGhostAfterDelay(g, 3f));
     }
 
-    // ------------------------------------
-    // 幽灵状态：惊吓、恢复
-    // ------------------------------------
     IEnumerator ScareGhosts()
     {
         audioManager.PlayScaredBGM();
@@ -183,7 +178,7 @@ public class GameManager : MonoBehaviour
             else if (scaredTimer > 0f)
             {
                 g.SetState(GhostController.GhostState.Recovering);
-                audioManager.PlayScaredBGM(); // Recovering 期间通常保持惊吓BGM
+                audioManager.PlayScaredBGM();
             }
             else
             {
@@ -199,29 +194,22 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // ------------------------------------
-    // 玩家死亡与复活
-    // ------------------------------------
     public void OnPlayerDeath()
     {
-        if (!isGameRunning) return;  // 防止重复触发
+        if (!isGameRunning) return; 
         isGameRunning = false;
 
-        // 立即禁用玩家控制与幽灵移动
         if (pacStudent != null)
             pacStudent.canControl = false;
         foreach (var g in ghosts)
             g.SetCanMove(false);
 
-        // 扣血并更新 UI
         lives--;
         hud.SetLives(lives);
 
-        // 播放死亡特效 / 音效（如果 AudioManager 里有）
         if (audioManager != null)
             audioManager.StopAllSFX();
 
-        // 启动死亡流程
         StartCoroutine(PlayerDeathSequence());
     }
 
@@ -250,23 +238,17 @@ public class GameManager : MonoBehaviour
             g.ResetToStartNormal();
     }
 
-    // ------------------------------------
-    // Game Over
-    // ------------------------------------
-    // ====================== GAME OVER ======================
     IEnumerator GameOver()
     {
         hud.ShowGameOver(true);
         isGameRunning = false;
 
-        // 读取旧记录
         int prevHigh = PlayerPrefs.GetInt("HighScore", 0);
         float prevTime = PlayerPrefs.GetFloat("BestTime", 9999f);
 
         Debug.Log($"Current Score = {score}, Time = {gameTimer:F2}");
         Debug.Log($"Previous Record: High = {prevHigh}, Time = {prevTime:F2}");
 
-        // 比较逻辑：高分优先；同分比时间
         if (score > prevHigh || (score == prevHigh && gameTimer < prevTime))
         {
             PlayerPrefs.SetInt("HighScore", score);
@@ -281,45 +263,34 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        // 确保保存完成后再切场景
         PlayerPrefs.Save();
         UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
     }
 
 
-    // ------------------------------------
-    // 分数
-    // ------------------------------------
     void AddScore(int value)
     {
         score += value;
         hud.SetScore(score);
     }
 
-    // ------------------------------------
-    // 主动退出（Exit 按钮）
-    // ------------------------------------
-    // ====================== EXIT BUTTON ======================
     public void ExitToStartScene()
     {
         isGameRunning = false;
 
-        // 当前成绩
         int currentScore = score;
         float currentTime = gameTimer;
 
-        // 旧记录
         int highScore = PlayerPrefs.GetInt("HighScore", 0);
         float bestTime = PlayerPrefs.GetFloat("BestTime", 9999f);
 
         Debug.Log($" Exit pressed. Current = {currentScore}, {currentTime:F2} | Old = {highScore}, {bestTime:F2}");
 
-        // 判断是否刷新记录
         if (currentScore > highScore || (currentScore == highScore && currentTime < bestTime))
         {
             PlayerPrefs.SetInt("HighScore", currentScore);
             PlayerPrefs.SetFloat("BestTime", currentTime);
-            PlayerPrefs.Save(); //
+            PlayerPrefs.Save(); 
             Debug.Log($"New High Score Saved via Exit!  Score = {currentScore}, Time = {currentTime:F2}");
         }
         else
@@ -327,17 +298,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("No new record via Exit.");
         }
 
-        // 3 秒后回 StartScene
         StartCoroutine(ReturnToStartAfterDelay(3f));
     }
     private IEnumerator ReturnToStartAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        // 确保保存完毕
         PlayerPrefs.Save();
 
-        // 重新加载 StartScene
         UnityEngine.SceneManagement.SceneManager.LoadScene("StartScene");
     }
 

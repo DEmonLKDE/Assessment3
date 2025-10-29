@@ -14,21 +14,17 @@ public class HUDController : MonoBehaviour
     public TMP_Text ghostTimerText;
 
     [Header("Lives")]
-    public Transform livesGroup;        // LivesPanel
-    public GameObject lifeIconPrefab;   // 可选，用来动态生成生命图标
+    public Transform livesGroup;  
+    public GameObject lifeIconPrefab;  
 
     [Header("Panels")]
     public GameObject countdownPanel;
     public TMP_Text countdownText;
     public GameObject gameOverPanel;
 
-    // 内部变量
     private List<GameObject> lifeIcons = new List<GameObject>();
     private int shownLives = -1;
 
-    // ===============================
-    // 初始化生命图标
-    // ===============================
     public void InitLives(int lives)
     {
         if (livesGroup == null || lifeIconPrefab == null)
@@ -37,12 +33,10 @@ public class HUDController : MonoBehaviour
             return;
         }
 
-        // 清除旧图标
         foreach (var icon in lifeIcons)
             if (icon != null) Destroy(icon);
         lifeIcons.Clear();
 
-        // 生成新图标
         for (int i = 0; i < lives; i++)
         {
             GameObject icon = Instantiate(lifeIconPrefab, livesGroup);
@@ -52,9 +46,6 @@ public class HUDController : MonoBehaviour
         shownLives = lives;
     }
 
-    // ===============================
-    // 更新生命数量（扣血）
-    // ===============================
     public void SetLives(int lives)
     {
         if (lifeIcons.Count == 0)
@@ -66,18 +57,12 @@ public class HUDController : MonoBehaviour
         shownLives = lives;
     }
 
-    // ===============================
-    // 分数显示
-    // ===============================
     public void SetScore(int value)
     {
         if (scoreText)
-            scoreText.text = value.ToString("D6"); // 显示六位数，如 000120
+            scoreText.text = value.ToString("D6");
     }
 
-    // ===============================
-    // 游戏计时器
-    // ===============================
     public void SetTimer(float time)
     {
         if (!timerText) return;
@@ -87,9 +72,6 @@ public class HUDController : MonoBehaviour
         timerText.text = $"{min:00}:{sec:00}:{centi:00}";
     }
 
-    // ===============================
-    // 幽灵计时器显示
-    // ===============================
     public void ShowGhostTimer(bool show)
     {
         if (ghostTimerText)
@@ -102,18 +84,12 @@ public class HUDController : MonoBehaviour
             ghostTimerText.text = Mathf.CeilToInt(remaining).ToString();
     }
 
-    // ===============================
-    // 关卡名
-    // ===============================
     public void SetLevelName(string name)
     {
         if (levelNameText)
             levelNameText.text = name;
     }
 
-    // ===============================
-    // 倒计时 3 2 1 GO!
-    // ===============================
     public IEnumerator Countdown321GO(float perSecond = 1f)
     {
         if (countdownPanel) countdownPanel.SetActive(true);
@@ -134,9 +110,6 @@ public class HUDController : MonoBehaviour
             countdownPanel.SetActive(show);
     }
 
-    // ===============================
-    // GameOver 显示
-    // ===============================
     public void ShowGameOver(bool show)
     {
         if (gameOverPanel)

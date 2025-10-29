@@ -891,6 +891,7 @@ GameObject:
   - component: {fileID: 275233977}
   - component: {fileID: 275233976}
   - component: {fileID: 275233975}
+  - component: {fileID: 275233978}
   m_Layer: 5
   m_Name: Level 1
   m_TagString: Untagged
@@ -961,7 +962,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 275233976}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 275233978}
+        m_TargetAssemblyTypeName: LevelButton, Assembly-CSharp
+        m_MethodName: LoadLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &275233976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,6 +1013,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275233973}
   m_CullTransparentMesh: 1
+--- !u!114 &275233978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275233973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14a27589cbf0784c8ce32b1bb19723a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetScene: MainScene
 --- !u!1001 &280576065
 PrefabInstance:
   m_ObjectHideFlags: 0

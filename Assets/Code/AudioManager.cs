@@ -14,10 +14,8 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        // 保留空闲状态，等待 GameManager 控制
     }
 
-    // --- 新增 ---
     public void PlayCountdownBGM(bool loop = false)
     {
         if (bgmSource == null || countdownBGM == null) return;
