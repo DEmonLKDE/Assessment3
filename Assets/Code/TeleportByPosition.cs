@@ -24,14 +24,12 @@ public class TeleportByPosition : MonoBehaviour
         if (Vector3.Distance(pos, leftGatePos) < triggerRange)
         {
             pacStudent.position = rightGatePos;
-            Debug.Log($"Teleported from Left ({leftGatePos}) ¡ú Right ({rightGatePos})");
             return;
         }
 
         if (bidirectional && Vector3.Distance(pos, rightGatePos) < triggerRange)
         {
             pacStudent.position = leftGatePos;
-            Debug.Log($"Teleported from Right ({rightGatePos}) ¡ú Left ({leftGatePos})");
             return;
         }
         
@@ -42,14 +40,12 @@ public class TeleportByPosition : MonoBehaviour
         if (Vector3.Distance(pos2, leftGatePos2) < triggerRange)
         {
             pacStudent.position = rightGatePos2;
-            Debug.Log($"Teleported from Left ({leftGatePos2}) ¡ú Right ({rightGatePos2})");
             return;
         }
 
         if (bidirectional && Vector3.Distance(pos2, rightGatePos2) < triggerRange)
         {
             pacStudent.position = leftGatePos2;
-            Debug.Log($"Teleported from Right ({rightGatePos2}) ¡ú Left ({leftGatePos2})");
             return;
         }
     }

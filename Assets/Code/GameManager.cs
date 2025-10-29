@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public bool isGameRunning = false;
 
     private int score = 0;
+    private string currentLevelKey;
     private int lives;
     private float gameTimer = 0f;
 
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        currentLevelKey = SceneManager.GetActiveScene().name == "InnovationScene" ? "Level2" : "Level1";
+
         lives = startLives;
         if (hud != null)
         {
@@ -243,18 +246,14 @@ public class GameManager : MonoBehaviour
         hud.ShowGameOver(true);
         isGameRunning = false;
 
-        int prevHigh = PlayerPrefs.GetInt("HighScore", 0);
-        float prevTime = PlayerPrefs.GetFloat("BestTime", 9999f);
-
-        Debug.Log($"Current Score = {score}, Time = {gameTimer:F2}");
-        Debug.Log($"Previous Record: High = {prevHigh}, Time = {prevTime:F2}");
+        int prevHigh = PlayerPrefs.GetInt($"HighScore_{currentLevelKey}", 0);
+        float prevTime = PlayerPrefs.GetFloat($"BestTime_{currentLevelKey}", 9999f);
 
         if (score > prevHigh || (score == prevHigh && gameTimer < prevTime))
         {
-            PlayerPrefs.SetInt("HighScore", score);
-            PlayerPrefs.SetFloat("BestTime", gameTimer);
+            PlayerPrefs.SetInt($"HighScore_{currentLevelKey}", score);
+            PlayerPrefs.SetFloat($"BestTime_{currentLevelKey}", gameTimer);
             PlayerPrefs.Save();
-            Debug.Log($"New High Score Saved!  Score = {score}, Time = {gameTimer:F2}");
         }
         else
         {
@@ -281,17 +280,15 @@ public class GameManager : MonoBehaviour
         int currentScore = score;
         float currentTime = gameTimer;
 
-        int highScore = PlayerPrefs.GetInt("HighScore", 0);
-        float bestTime = PlayerPrefs.GetFloat("BestTime", 9999f);
+        int highScore = PlayerPrefs.GetInt($"HighScore_{currentLevelKey}", 0);
+        float bestTime = PlayerPrefs.GetFloat($"BestTime_{currentLevelKey}", 9999f);
 
-        Debug.Log($" Exit pressed. Current = {currentScore}, {currentTime:F2} | Old = {highScore}, {bestTime:F2}");
 
         if (currentScore > highScore || (currentScore == highScore && currentTime < bestTime))
         {
-            PlayerPrefs.SetInt("HighScore", currentScore);
-            PlayerPrefs.SetFloat("BestTime", currentTime);
+            PlayerPrefs.SetInt($"HighScore_{currentLevelKey}", currentScore);
+            PlayerPrefs.SetFloat($"BestTime_{currentLevelKey}", currentTime);
             PlayerPrefs.Save(); 
-            Debug.Log($"New High Score Saved via Exit!  Score = {currentScore}, Time = {currentTime:F2}");
         }
         else
         {

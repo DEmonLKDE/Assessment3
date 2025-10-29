@@ -7,7 +7,6 @@ public class LevelButton : MonoBehaviour
 
     public void LoadLevel()
     {
-        Debug.Log($"Loading Scene: {targetScene}");
         SceneManager.LoadScene(targetScene);
     }
 }
